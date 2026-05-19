@@ -1,0 +1,109 @@
+.kira-main-content {
+  animation: kiraFadeIn 0.35s ease-out both;
+}
+.kira-post {
+  animation: kiraSlideUp 0.4s ease-out both;
+}
+.kira-posts .kira-post:nth-child(1) {
+  animation-delay: 0s;
+}
+.kira-posts .kira-post:nth-child(2) {
+  animation-delay: 0.05s;
+}
+.kira-posts .kira-post:nth-child(3) {
+  animation-delay: 0.1s;
+}
+.kira-posts .kira-post:nth-child(4) {
+  animation-delay: 0.15s;
+}
+.kira-posts .kira-post:nth-child(5) {
+  animation-delay: 0.2s;
+}
+.sidebar-nav-item {
+  transition: transform 0.2s ease, background-color 0.25s ease;
+}
+.sidebar-nav-item:hover {
+  transform: translateX(4px);
+}
+.kira-archive-item {
+  animation: kiraFadeIn 0.3s ease-out both;
+}
+.kira-friends-card {
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2), box-shadow 0.3s ease;
+}
+.kira-friends-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+@-moz-keyframes kiraFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes kiraFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-o-keyframes kiraFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes kiraFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-moz-keyframes kiraSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@-webkit-keyframes kiraSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@-o-keyframes kiraSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes kiraSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

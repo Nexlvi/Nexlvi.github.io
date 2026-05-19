@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/css/layout.css">
 
 		
-		<title> Hello World -  Nexlvi&#39;s Blog</title>
+		<title> Hexo 博客写作指南 -  Nexlvi&#39;s Blog</title>
 		<!-- <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css" /> -->
 		<!-- <script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script> -->
 		
@@ -46,6 +46,12 @@
 		
 <link rel="stylesheet" href="/deps/css/APlayer.min.css">
 
+		
+			
+				
+<link rel="stylesheet" href="/smooth.css">
+
+			
 		
 		
 <script src="/deps/js/APlayer.min.js"></script>
@@ -85,7 +91,7 @@
 	</div>
 	<div class="kira-count">
 		<div><span>文章</span>1</div>
-		<div><span>标签</span>0</div>
+		<div><span>标签</span>2</div>
 		<div><span>分类</span>0</div>
 	</div>
 	<div class="kira-list">
@@ -227,6 +233,13 @@
 			
 		
 			
+	<div class="kira-widget-wrap">
+		<div id="randomtagcloud" class="kira-widget tagcloud kira-rainbow">
+			<a href="/tags/Hexo/" style="font-size: 10px;">Hexo</a> <a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 10px;">教程</a>
+		</div>
+		
+	</div>
+
 
 		
 			
@@ -249,7 +262,7 @@
 		<a href="https://github.com/ch1ny/kira-hexo/" target="_blank">Kira-Hexo</a>
 		<br />
 		
-		
+		<script>(function(){var p=new Set();var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){var l=e.target.href;if(l&&!p.has(l)){p.add(l);var x=document.createElement("link");x.rel="prefetch";x.href=l;document.head.appendChild(x)}}})});function t(){var l=document.querySelectorAll("a[href^=\"/\"]:not([target]):not([download])");l.forEach(function(e){var h=e.href;if(!p.has(h)&&h!==location.href&&h.indexOf("#")===-1)o.observe(e)})};t();var mo=new MutationObserver(t);mo.observe(document.body,{childList:true,subtree:true})})();</script>
 	</div>
 </div>
 <div
@@ -323,37 +336,124 @@
 			<img
 				data-src="/images/photo.jpg"
 				data-sizes="auto"
-				alt="Hello World"
+				alt="Hexo 博客写作指南"
 				class="lazyload kira-post-cover-image disabled-kira-image"
 			/>
-			<h1>Hello World</h1>
+			<h1>Hexo 博客写作指南</h1>
 		</div>
 		
 		<div class="kira-post-meta kira-rainbow" style="margin:10px 0!important;">
-			<a><i class="kirafont icon-calendar-fill"></i>2026年05月19日</a>
-			<a><i class="kirafont icon-edit-fill"></i>73 字</a>
-			<a><i class="kirafont icon-time-circle-fill"></i>大概 1 分钟</a>
+			<a><i class="kirafont icon-calendar-fill"></i>2026年05月20日</a>
+			<a><i class="kirafont icon-edit-fill"></i>473 字</a>
+			<a><i class="kirafont icon-time-circle-fill"></i>大概 2 分钟</a>
 		</div>
-		<html><head></head><body><p><img src="/images/photo.jpg"><br>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2><span id="quick-start">Quick Start</span></h2><h3><span id="create-a-new-post">Create a new post</span></h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">"My New Post"</span><br></code></pre></td></tr></tbody></table></figure>
+		<html><head></head><body><h2><span id="%E6%96%87%E7%AB%A0%E5%B1%9E%E6%80%A7front-matter">文章属性（front-matter）</span></h2><p>文章顶部的 <code>---</code> 块里可以写这些：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>title</code></td>
+<td>文章标题</td>
+<td><code>title: 我的第一篇文章</code></td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>发布日期</td>
+<td><code>date: 2026-05-20</code></td>
+</tr>
+<tr>
+<td><code>cover</code></td>
+<td>封面图（首页列表 + 文章页顶部都会显示）</td>
+<td><code>cover: /images/photo.jpg</code></td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>标签，显示在文章底部和侧边栏标签云</td>
+<td><code>tags:\n  - 网络\n  - 安全</code></td>
+</tr>
+<tr>
+<td><code>categories</code></td>
+<td>分类</td>
+<td><code>categories:\n  - CTF</code></td>
+</tr>
+<tr>
+<td><code>comments</code></td>
+<td>是否开启评论，默认开</td>
+<td><code>comments: false</code> 关闭</td>
+</tr>
+<tr>
+<td><code>hide_copyright</code></td>
+<td>隐藏版权声明</td>
+<td><code>hide_copyright: true</code></td>
+</tr>
+</tbody></table>
+<p>不设 <code>cover</code> 的话会自动用 <code>_config.kira.yml</code> 里设置的全局背景图。</p>
+<hr>
+<h2><span id="%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87">插入图片</span></h2><figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs markdown">![](<span class="hljs-link">/images/photo.jpg</span>)<br></code></pre></td></tr></tbody></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3><span id="run-server">Run server</span></h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></tbody></table></figure>
+<ul>
+<li>图片放在 <code>source/images/</code> 目录下</li>
+<li>所有图片会自动懒加载 + 点击放大灯箱</li>
+<li>如果不想启用灯箱，给 img 加 <code>disabled-kira-image</code> class（需要写 HTML）</li>
+</ul>
+<hr>
+<h2><span id="%E6%8F%92%E5%85%A5%E9%93%BE%E6%8E%A5">插入链接</span></h2><figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs markdown">[<span class="hljs-string">链接文字</span>](<span class="hljs-link">https://example.com</span>)<br></code></pre></td></tr></tbody></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3><span id="generate-static-files">Generate static files</span></h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></tbody></table></figure>
+<hr>
+<h2><span id="%E6%8F%92%E5%85%A5%E8%A7%86%E9%A2%91">插入视频</span></h2><h3><span id="b%E7%AB%99%E8%A7%86%E9%A2%91">B站视频</span></h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">{% biliplayer BV1xx411c7mD %}<br></code></pre></td></tr></tbody></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3><span id="deploy-to-remote-sites">Deploy to remote sites</span></h3><figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></tbody></table></figure>
+<p>可选参数：<code>{% biliplayer BV号 分P 弹幕 %}</code>，例如：</p>
+<ul>
+<li><code>{% biliplayer BV1xx411c7mD 1 1 %}</code> — 第 1 分P，开启弹幕</li>
+<li><code>{% biliplayer BV1xx411c7mD 1 0 %}</code> — 第 1 分P，关闭弹幕</li>
+</ul>
+<p>AV 号也可以用：</p>
+<ul>
+<li><code>{% biliplayer av123456 %}</code></li>
+</ul>
+<h3><span id="codepen">Codepen</span></h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">{% pen https://codepen.io/xxx/pen/yyy %}<br></code></pre></td></tr></tbody></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<hr>
+<h2><span id="%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90aplayer">插入音乐（APlayer）</span></h2><h3><span id="%E7%BD%91%E6%98%93%E4%BA%91%E7%AD%89%E5%B9%B3%E5%8F%B0">网易云等平台</span></h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">{% meting server type id %}<br></code></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><code>server</code>: <code>netease</code>（网易云）、<code>tencent</code>（QQ音乐）、<code>kugou</code>（酷狗）、<code>baidu</code>（百度）</li>
+<li><code>type</code>: <code>song</code>（单曲）、<code>playlist</code>（歌单）、<code>album</code>（专辑）、<code>artist</code>（艺术家）</li>
+<li><code>id</code>: 对应平台的 ID</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">{% meting netease playlist 123456 autoplay:false %}<br>{% meting netease song 123456 %}<br></code></pre></td></tr></tbody></table></figure>
+
+<p>可选参数：<code>autoplay</code>、<code>loop:all</code>、<code>order:random</code>、<code>volume:0.5</code>、<code>mini</code>、<code>listfolded</code>、<code>theme:#ad7a86</code> 等。</p>
+<h3><span id="%E8%87%AA%E5%AE%9A%E4%B9%89%E6%92%AD%E6%94%BE%E5%99%A8">自定义播放器</span></h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">{% krplayer %}<br>... APlayer 配置 ...<br>{% endkrplayer %}<br></code></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h2><span id="%E6%8F%92%E5%85%A5%E7%9B%AE%E5%BD%95">插入目录</span></h2><p>在文章任意位置插入：</p>
+<figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs markdown">&lt;!-- toc --&gt;<br></code></pre></td></tr></tbody></table></figure>
+
+<p>会自动根据文章标题层级生成目录。</p>
+<hr>
+<h2><span id="%E4%BB%A3%E7%A0%81%E5%9D%97">代码块</span></h2><figure class="highlight markdown"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-code">```python</span><br><span class="hljs-code">print("hello")</span><br><span class="hljs-code">```</span><br></code></pre></td></tr></tbody></table></figure>
+
+<p><code>_config.kira.yml</code> 中 <code>copyableCodeblock: true</code> 已开启，鼠标悬停代码块会显示复制按钮。</p>
+<hr>
+<h2><span id="%E5%85%B6%E4%BB%96">其他</span></h2><ul>
+<li><strong>字数统计 &amp; 阅读时间</strong>：自动显示在文章 meta 栏</li>
+<li><strong>代码高亮</strong>：基于 highlight.js，自动识别语言</li>
+<li><strong>响应式</strong>：文章页面自适应手机 / 平板 / 桌面</li>
+</ul>
 </body></html>
 	</article>
 
 	 
     <div class="kira-post-copyright">
         <strong>本文作者：</strong>Nexlvi<br>
-        <strong>本文链接：</strong><a href="https://nexlvi.github.io/2026/05/19/hello-world/hello-world/" title="https:&#x2F;&#x2F;nexlvi.github.io&#x2F;2026&#x2F;05&#x2F;19&#x2F;hello-world&#x2F;hello-world&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;nexlvi.github.io&#x2F;2026&#x2F;05&#x2F;19&#x2F;hello-world&#x2F;hello-world&#x2F;</a><br>
+        <strong>本文链接：</strong><a href="https://nexlvi.github.io/2026/05/20/hello-world/" title="https:&#x2F;&#x2F;nexlvi.github.io&#x2F;2026&#x2F;05&#x2F;20&#x2F;hello-world&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;nexlvi.github.io&#x2F;2026&#x2F;05&#x2F;20&#x2F;hello-world&#x2F;</a><br>
         
             <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
         
@@ -368,6 +468,8 @@
 	
 	<div class="kira-post-meta kira-rainbow">
 		
+		
+			<a class="kirafont icon-tag-fill -none-link" href="/tags/Hexo/" rel="tag">Hexo</a> <a class="kirafont icon-tag-fill -none-link" href="/tags/%E6%95%99%E7%A8%8B/" rel="tag">教程</a>
 		
 	</div>
 	
