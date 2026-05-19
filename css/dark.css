@@ -1,0 +1,194 @@
+html[data-theme="dark"] .kira-main-content {
+  background-color: #1e1e24;
+}
+html[data-theme="dark"] article {
+  color: #c9cdd4;
+}
+html[data-theme="dark"] article h1,
+html[data-theme="dark"] article h2,
+html[data-theme="dark"] article h3,
+html[data-theme="dark"] article h4,
+html[data-theme="dark"] article h5,
+html[data-theme="dark"] article h6 {
+  color: #e8eaed;
+}
+html[data-theme="dark"] article h2::before {
+  border-bottom-color: #333;
+}
+html[data-theme="dark"] article blockquote {
+  color: #a8abb2;
+  background-color: #25252c;
+  border-color: #333;
+}
+html[data-theme="dark"] article del {
+  color: #777;
+}
+html[data-theme="dark"] article hr {
+  border-top-color: #444;
+}
+html[data-theme="dark"] article code {
+  background-color: rgba(49,174,255,0.15);
+}
+html[data-theme="dark"] article table {
+  color: #bcc0c6;
+}
+html[data-theme="dark"] article table thead {
+  border-bottom-color: #333;
+  background-color: #25252c;
+}
+html[data-theme="dark"] article table thead tr {
+  background-color: #25252c;
+}
+html[data-theme="dark"] article table th,
+html[data-theme="dark"] article table td {
+  border-color: #333;
+}
+html[data-theme="dark"] article table tr {
+  background-color: #1e1e24;
+}
+html[data-theme="dark"] article table tr:nth-child(2n) {
+  background-color: #25252c;
+}
+html[data-theme="dark"] article input[type="checkbox"]::after {
+  color: #1e1e24;
+  background-color: #333;
+  border-color: #555;
+}
+html[data-theme="dark"] article .highlight {
+  background: #1a1a1a;
+  border-color: #333;
+}
+html[data-theme="dark"] article .highlight .gutter {
+  border-right-color: #333;
+}
+html[data-theme="dark"] article pre {
+  background: #1a1a1a;
+}
+html[data-theme="dark"] article > ol > li::before {
+  background-color: rgba(49,174,255,0.2);
+}
+html[data-theme="dark"] article ul li::before {
+  border-color: #1e1e24;
+}
+html[data-theme="dark"] article ul li::after {
+  background: rgba(49,174,255,0.15);
+}
+html[data-theme="dark"] .kira-post-cover {
+  background-color: #2a2a30;
+}
+html[data-theme="dark"] .kira-post-copyright {
+  color: #bcc0c6;
+  background-color: #25252c;
+}
+html[data-theme="dark"] .kira-post-footer {
+  background-color: #25252c;
+}
+html[data-theme="dark"] .kira-post-nav {
+  background-color: #1e1e24;
+}
+html[data-theme="dark"] .kira-post-nav .post-nav div a {
+  border-bottom-color: #444;
+}
+html[data-theme="dark"] .kira-posts .kira-post:hover {
+  background-color: rgba(255,255,255,0.04);
+}
+html[data-theme="dark"] .kira-hr {
+  border-bottom-color: rgba(255,255,255,0.1);
+}
+html[data-theme="dark"] .kira-page-nav {
+  color: #555;
+  background-color: #25252c;
+}
+html[data-theme="dark"] .kira-page-nav a:not(.current):hover {
+  background-color: rgba(255,255,255,0.08);
+}
+html[data-theme="dark"] .kira-sidebar .kira-count div {
+  color: #777;
+}
+html[data-theme="dark"] .kira-sidebar .kira-count div span {
+  color: #bcc0c6;
+}
+html[data-theme="dark"] .kira-sidebar .kira-list-item {
+  color: #888;
+}
+html[data-theme="dark"] .kira-sidebar .kira-list-item:hover {
+  background-color: rgba(255,255,255,0.08);
+}
+html[data-theme="dark"] .kira-sidebar .kira-social a {
+  color: #999;
+}
+html[data-theme="dark"] .kira-sidebar .kira-widget-wrap {
+  background-color: #282830;
+  box-shadow: 0 0 1rem rgba(0,0,0,0.35);
+}
+html[data-theme="dark"] .kira-sidebar .kira-widget-wrap .kira-widget ul li a {
+  color: #a8abb2;
+}
+html[data-theme="dark"] .kira-sidebar .kira-widget-wrap .tagcloud a {
+  background-color: rgba(255,255,255,0.05);
+}
+html[data-theme="dark"] .kira-sidebar .kira-copyright {
+  color: #777;
+}
+html[data-theme="dark"] .kira-sidebar-modal.show {
+  background-color: rgba(0,0,0,0.5);
+}
+html[data-theme="dark"] article details .aplayer {
+  box-shadow: 0 0 0 1px #333 !important;
+}
+html[data-theme="dark"] article details .aplayer .aplayer-list ol li.aplayer-list-light {
+  background: #25252c !important;
+}
+html[data-theme="dark"] .kira-background {
+  opacity: 0.12;
+}
+.kira-theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 12px 20px;
+  padding: 0;
+}
+.kira-theme-toggle button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  background: rgba(49,174,255,0.1);
+  color: #31aeff;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.kira-theme-toggle button:hover {
+  background: #31aeff;
+  color: #fff;
+  transform: rotate(30deg);
+}
+.kira-theme-toggle button:active {
+  transform: rotate(30deg) scale(0.9);
+}
+.kira-theme-toggle .kira-theme-icon-light {
+  display: none;
+}
+.kira-theme-toggle .kira-theme-icon-dark {
+  display: inline;
+}
+html[data-theme="dark"] .kira-theme-toggle button {
+  background: rgba(255,200,50,0.15);
+  color: #ffc832;
+}
+html[data-theme="dark"] .kira-theme-toggle button:hover {
+  background: #ffc832;
+  color: #1e1e24;
+  transform: rotate(-30deg);
+}
+html[data-theme="dark"] .kira-theme-toggle button .kira-theme-icon-light {
+  display: inline;
+}
+html[data-theme="dark"] .kira-theme-toggle button .kira-theme-icon-dark {
+  display: none;
+}

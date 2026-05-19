@@ -52,6 +52,10 @@
 <link rel="stylesheet" href="/smooth.css">
 
 			
+				
+<link rel="stylesheet" href="/dark.css">
+
+			
 		
 		
 <script src="/deps/js/APlayer.min.js"></script>
@@ -62,7 +66,7 @@
 	<body>
 		<div
 			class="kira-background"
-			style="background-image: url('https://kira.host/assets/Pictures/Others/-f0d5cc34c6e5aa7_compressed.jpg')"
+			style="background-image: url('https://github.com/Nexlvi/Nexlvi.github.io/blob/gh-pages/images/photo.jpg')"
 		></div>
 		<div class="kira-header">
     <a
@@ -262,7 +266,7 @@
 		<a href="https://github.com/ch1ny/kira-hexo/" target="_blank">Kira-Hexo</a>
 		<br />
 		
-		<script>(function(){var p=new Set();var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){var l=e.target.href;if(l&&!p.has(l)){p.add(l);var x=document.createElement("link");x.rel="prefetch";x.href=l;document.head.appendChild(x)}}})});function t(){var l=document.querySelectorAll("a[href^=\"/\"]:not([target]):not([download])");l.forEach(function(e){var h=e.href;if(!p.has(h)&&h!==location.href&&h.indexOf("#")===-1)o.observe(e)})};t();var mo=new MutationObserver(t);mo.observe(document.body,{childList:true,subtree:true})})();</script>
+		<div class="kira-theme-toggle"><button id="themeToggle" title="切换深浅色"><span class="kira-theme-icon-dark">&#9790;</span><span class="kira-theme-icon-light">&#9728;</span></button></div><script>(function(){var p=new Set();var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){var l=e.target.href;if(l&&!p.has(l)){p.add(l);var x=document.createElement("link");x.rel="prefetch";x.href=l;document.head.appendChild(x)}}})});function t(){var l=document.querySelectorAll("a[href^=\"/\"]:not([target]):not([download])");l.forEach(function(e){var h=e.href;if(!p.has(h)&&h!==location.href&&h.indexOf("#")===-1)o.observe(e)})};t();var mo=new MutationObserver(t);mo.observe(document.body,{childList:true,subtree:true});var theme="light";var saved=localStorage.getItem("kira-theme");if(saved){theme=saved}else if(window.matchMedia("(prefers-color-scheme:dark)").matches){theme="dark"}document.documentElement.setAttribute("data-theme",theme);document.getElementById("themeToggle").addEventListener("click",function(){var cur=document.documentElement.getAttribute("data-theme");var next=cur==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",next);localStorage.setItem("kira-theme",next)})})();</script>
 	</div>
 </div>
 <div
