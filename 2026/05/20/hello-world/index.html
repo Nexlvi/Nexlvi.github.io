@@ -17,15 +17,15 @@
     
 <link rel="stylesheet" href="/css/loader.css">
 
-    <meta name="description" content="文章属性（front-matter） 文章顶部的 --- 块里可以写这些：    属性 说明 示例     title 文章标题 title: 我的第一篇文章   date 发布日期 date: 2026-05-20   cover 封面图（首页列表 + 文章页顶部都会显示） cover: &#x2F;images&#x2F;photo.jpg   tags 标签，显示在文章底部和侧边栏标签云 tags:\n  -">
+    <meta name="description" content="文章属性（front-matter） 文章顶部的 --- 块里可以写这些：    属性 说明 示例     title 文章标题 title: 我的第一篇文章   date 发布日期 date: 2026-05-20   cover 封面图（优先级高于全局 banner） cover: &#x2F;images&#x2F;photo.jpg   banner 文章页顶部大图（覆盖全局 banner） banner:">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo 博客写作指南">
 <meta property="og:url" content="https://nexlvi.github.io/2026/05/20/hello-world/index.html">
 <meta property="og:site_name" content="Nexlvi&#39;s Blog">
-<meta property="og:description" content="文章属性（front-matter） 文章顶部的 --- 块里可以写这些：    属性 说明 示例     title 文章标题 title: 我的第一篇文章   date 发布日期 date: 2026-05-20   cover 封面图（首页列表 + 文章页顶部都会显示） cover: &#x2F;images&#x2F;photo.jpg   tags 标签，显示在文章底部和侧边栏标签云 tags:\n  -">
+<meta property="og:description" content="文章属性（front-matter） 文章顶部的 --- 块里可以写这些：    属性 说明 示例     title 文章标题 title: 我的第一篇文章   date 发布日期 date: 2026-05-20   cover 封面图（优先级高于全局 banner） cover: &#x2F;images&#x2F;photo.jpg   banner 文章页顶部大图（覆盖全局 banner） banner:">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-05-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-05-19T16:22:35.025Z">
+<meta property="article:modified_time" content="2026-05-19T17:42:49.422Z">
 <meta property="article:author" content="Nexlvi">
 <meta property="article:tag" content="Hexo">
 <meta property="article:tag" content="教程">
@@ -146,7 +146,7 @@
     <div class="sidebar-wrap" data-aos="fade-up">
           <div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E5%B1%9E%E6%80%A7front-matter"><span class="toc-number">1.</span> <span class="toc-text"> 文章属性（front-matter）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87"><span class="toc-number">2.</span> <span class="toc-text"> 插入图片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E9%93%BE%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text"> 插入链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E8%A7%86%E9%A2%91"><span class="toc-number">4.</span> <span class="toc-text"> 插入视频</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#b%E7%AB%99%E8%A7%86%E9%A2%91"><span class="toc-number">4.1.</span> <span class="toc-text"> B站视频</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#codepen"><span class="toc-number">4.2.</span> <span class="toc-text"> Codepen</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90aplayer"><span class="toc-number">5.</span> <span class="toc-text"> 插入音乐（APlayer）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E6%98%93%E4%BA%91%E7%AD%89%E5%B9%B3%E5%8F%B0"><span class="toc-number">5.1.</span> <span class="toc-text"> 网易云等平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%92%AD%E6%94%BE%E5%99%A8"><span class="toc-number">5.2.</span> <span class="toc-text"> 自定义播放器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E7%9B%AE%E5%BD%95"><span class="toc-number">6.</span> <span class="toc-text"> 插入目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-number">7.</span> <span class="toc-text"> 代码块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">8.</span> <span class="toc-text"> 其他</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E5%B1%9E%E6%80%A7front-matter"><span class="toc-number">1.</span> <span class="toc-text"> 文章属性（front-matter）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87"><span class="toc-number">2.</span> <span class="toc-text"> 插入图片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E9%93%BE%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text"> 插入链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#markdown-%E5%A2%9E%E5%BC%BA%E5%AE%B9%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text"> Markdown 增强容器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%A0%87%E7%AD%BE%E7%BB%84%E4%BB%B6"><span class="toc-number">5.</span> <span class="toc-text"> 插入标签组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%86%8C"><span class="toc-number">5.1.</span> <span class="toc-text"> 相册</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E6%A0%BC%E5%B8%83%E5%B1%80"><span class="toc-number">5.2.</span> <span class="toc-text"> 网格布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E7%AD%BE%E9%A1%B5"><span class="toc-number">5.3.</span> <span class="toc-text"> 标签页</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E7%A4%BA%E5%9D%97"><span class="toc-number">5.4.</span> <span class="toc-text"> 提示块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%98%E5%8F%A0%E5%9D%97"><span class="toc-number">5.5.</span> <span class="toc-text"> 折叠块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5%E5%8D%A1%E7%89%87"><span class="toc-number">5.6.</span> <span class="toc-text"> 链接卡片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E7%AD%BE%E8%BD%AE%E7%9B%98"><span class="toc-number">5.7.</span> <span class="toc-text"> 标签轮盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%83%AD%E5%BA%A6%E5%9B%BE"><span class="toc-number">5.8.</span> <span class="toc-text"> 热度图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90aplayer-meting"><span class="toc-number">6.</span> <span class="toc-text"> 插入音乐（APlayer + Meting）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E7%9B%AE%E5%BD%95"><span class="toc-number">7.</span> <span class="toc-text"> 插入目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-number">8.</span> <span class="toc-text"> 代码块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">9.</span> <span class="toc-text"> 其他</span></a></li></ol>
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -259,13 +259,18 @@
 </tr>
 <tr>
 <td><code>cover</code></td>
-<td>封面图（首页列表 + 文章页顶部都会显示）</td>
+<td>封面图（优先级高于全局 banner）</td>
 <td><code>cover: /images/photo.jpg</code></td>
 </tr>
 <tr>
+<td><code>banner</code></td>
+<td>文章页顶部大图（覆盖全局 banner）</td>
+<td><code>banner: /images/banner.jpg</code></td>
+</tr>
+<tr>
 <td><code>tags</code></td>
-<td>标签，显示在文章底部和侧边栏标签云</td>
-<td><code>tags:\n  - 网络\n  - 安全</code></td>
+<td>标签</td>
+<td><code>tags:\n  - Hexo\n  - 教程</code></td>
 </tr>
 <tr>
 <td><code>categories</code></td>
@@ -274,72 +279,112 @@
 </tr>
 <tr>
 <td><code>comments</code></td>
-<td>是否开启评论，默认开</td>
+<td>是否开启评论</td>
 <td><code>comments: false</code> 关闭</td>
 </tr>
 <tr>
-<td><code>hide_copyright</code></td>
-<td>隐藏版权声明</td>
-<td><code>hide_copyright: true</code></td>
+<td><code>toc</code></td>
+<td>是否显示目录</td>
+<td><code>toc: false</code> 关闭</td>
+</tr>
+<tr>
+<td><code>sidebar</code></td>
+<td>是否显示侧边栏</td>
+<td><code>sidebar: false</code> 关闭</td>
+</tr>
+<tr>
+<td><code>copyright</code></td>
+<td>是否显示文章版权</td>
+<td><code>copyright: false</code> 关闭</td>
+</tr>
+<tr>
+<td><code>sticky</code></td>
+<td>置顶文章</td>
+<td><code>sticky: true</code></td>
+</tr>
+<tr>
+<td><code>mermaid</code></td>
+<td>启用 Mermaid 图表</td>
+<td><code>mermaid: true</code></td>
+</tr>
+<tr>
+<td><code>outdated</code></td>
+<td>过期提醒</td>
+<td><code>outdated: false</code> 关闭</td>
+</tr>
+<tr>
+<td><code>excerpt</code></td>
+<td>自定义摘要</td>
+<td><code>excerpt: 这是摘要文字</code></td>
+</tr>
+<tr>
+<td><code>keywords</code></td>
+<td>SEO 关键词</td>
+<td><code>keywords: hexo, blog</code></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>SEO 描述</td>
+<td><code>description: 一篇教程</code></td>
 </tr>
 </tbody>
 </table>
-<p>不设 <code>cover</code> 的话会自动用 <code>_config.kira.yml</code> 里设置的全局背景图。</p>
+<p>不设 <code>cover</code> 的话会自动用 <code>_config.reimu.yml</code> 里设置的全局 banner 图。</p>
 <hr />
 <h2 id="插入图片"><a class="markdownIt-Anchor" href="#插入图片"></a> 插入图片</h2>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![](<span class="link">/images/photo.jpg</span>)</span><br></pre></td></tr></table></figure>
 <ul>
 <li>图片放在 <code>source/images/</code> 目录下</li>
-<li>所有图片会自动懒加载 + 点击放大灯箱</li>
-<li>如果不想启用灯箱，给 img 加 <code>disabled-kira-image</code> class（需要写 HTML）</li>
+<li>所有图片自动懒加载</li>
+<li>Reimu 使用 Photoswipe 灯箱，点击图片可全屏浏览、缩放、滑动切换</li>
 </ul>
 <hr />
 <h2 id="插入链接"><a class="markdownIt-Anchor" href="#插入链接"></a> 插入链接</h2>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">链接文字</span>](<span class="link">https://example.com</span>)</span><br></pre></td></tr></table></figure>
 <hr />
-<h2 id="插入视频"><a class="markdownIt-Anchor" href="#插入视频"></a> 插入视频</h2>
-<h3 id="b站视频"><a class="markdownIt-Anchor" href="#b站视频"></a> B站视频</h3>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% biliplayer BV1xx411c7mD %&#125;</span><br></pre></td></tr></table></figure>
-<p>可选参数：<code>&#123;% biliplayer BV号 分P 弹幕 %&#125;</code>，例如：</p>
-<ul>
-<li><code>&#123;% biliplayer BV1xx411c7mD 1 1 %&#125;</code> — 第 1 分P，开启弹幕</li>
-<li><code>&#123;% biliplayer BV1xx411c7mD 1 0 %&#125;</code> — 第 1 分P，关闭弹幕</li>
-</ul>
-<p>AV 号也可以用：</p>
-<ul>
-<li><code>&#123;% biliplayer av123456 %&#125;</code></li>
-</ul>
-<h3 id="codepen"><a class="markdownIt-Anchor" href="#codepen"></a> Codepen</h3>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% pen https://codepen.io/xxx/pen/yyy %&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="markdown-增强容器"><a class="markdownIt-Anchor" href="#markdown-增强容器"></a> Markdown 增强容器</h2>
+<p>使用 <code>:::</code> 语法创建提示框：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">::: tip</span><br><span class="line">这是一条提示信息</span><br><span class="line">:::</span><br><span class="line"></span><br><span class="line">::: warning</span><br><span class="line">这是一条警告信息</span><br><span class="line">:::</span><br><span class="line"></span><br><span class="line">::: danger</span><br><span class="line">这是一条危险警告</span><br><span class="line">:::</span><br><span class="line"></span><br><span class="line">::: info</span><br><span class="line">这是普通信息</span><br><span class="line">:::</span><br></pre></td></tr></table></figure>
 <hr />
-<h2 id="插入音乐aplayer"><a class="markdownIt-Anchor" href="#插入音乐aplayer"></a> 插入音乐（APlayer）</h2>
-<h3 id="网易云等平台"><a class="markdownIt-Anchor" href="#网易云等平台"></a> 网易云等平台</h3>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% meting server type id %&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>server</code>: <code>netease</code>（网易云）、<code>tencent</code>（QQ音乐）、<code>kugou</code>（酷狗）、<code>baidu</code>（百度）</li>
-<li><code>type</code>: <code>song</code>（单曲）、<code>playlist</code>（歌单）、<code>album</code>（专辑）、<code>artist</code>（艺术家）</li>
-<li><code>id</code>: 对应平台的 ID</li>
-</ul>
-<p>示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% meting netease playlist 123456 autoplay:false %&#125;</span><br><span class="line">&#123;% meting netease song 123456 %&#125;</span><br></pre></td></tr></table></figure>
-<p>可选参数：<code>autoplay</code>、<code>loop:all</code>、<code>order:random</code>、<code>volume:0.5</code>、<code>mini</code>、<code>listfolded</code>、<code>theme:#ad7a86</code> 等。</p>
-<h3 id="自定义播放器"><a class="markdownIt-Anchor" href="#自定义播放器"></a> 自定义播放器</h3>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% krplayer %&#125;</span><br><span class="line">... APlayer 配置 ...</span><br><span class="line">&#123;% endkrplayer %&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="插入标签组件"><a class="markdownIt-Anchor" href="#插入标签组件"></a> 插入标签组件</h2>
+<h3 id="相册"><a class="markdownIt-Anchor" href="#相册"></a> 相册</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;% gallery %&#125;</span><br><span class="line">![图1](url1)</span><br><span class="line">![图2](url2)</span><br><span class="line">&#123;% endgallery %&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="网格布局"><a class="markdownIt-Anchor" href="#网格布局"></a> 网格布局</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% grid %&#125;</span><br><span class="line">内容...</span><br><span class="line">&#123;% endgrid %&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="标签页"><a class="markdownIt-Anchor" href="#标签页"></a> 标签页</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;% tabs %&#125;</span><br><span class="line">&lt;!-- tab 标签1 --&gt;</span><br><span class="line">内容1</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&lt;!-- tab 标签2 --&gt;</span><br><span class="line">内容2</span><br><span class="line">&lt;!-- endtab --&gt;</span><br><span class="line">&#123;% endtabs %&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="提示块"><a class="markdownIt-Anchor" href="#提示块"></a> 提示块</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;% alertBlockquote tip %&#125;</span><br><span class="line">提示内容</span><br><span class="line">&#123;% endalertBlockquote %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% alertBlockquote warning %&#125;</span><br><span class="line">警告内容</span><br><span class="line">&#123;% endalertBlockquote %&#125;</span><br><span class="line"></span><br><span class="line">&#123;% alertBlockquote danger %&#125;</span><br><span class="line">危险内容</span><br><span class="line">&#123;% endalertBlockquote %&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="折叠块"><a class="markdownIt-Anchor" href="#折叠块"></a> 折叠块</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% details 点击展开 %&#125;</span><br><span class="line">隐藏的内容</span><br><span class="line">&#123;% enddetails %&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="链接卡片"><a class="markdownIt-Anchor" href="#链接卡片"></a> 链接卡片</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 外部链接卡片</span><br><span class="line">&#123;% link https://example.com 显示文字 %&#125;</span><br><span class="line"></span><br><span class="line"># 内部文章卡片</span><br><span class="line">&#123;% postLinkCard 2026/05/20/hello-world/ %&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="标签轮盘"><a class="markdownIt-Anchor" href="#标签轮盘"></a> 标签轮盘</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% tagRoulette %&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="热度图"><a class="markdownIt-Anchor" href="#热度图"></a> 热度图</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% heatMapCard %&#125;</span><br></pre></td></tr></table></figure>
+<hr />
+<h2 id="插入音乐aplayer-meting"><a class="markdownIt-Anchor" href="#插入音乐aplayer-meting"></a> 插入音乐（APlayer + Meting）</h2>
+<p>在 <code>_config.reimu.yml</code> 中配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">player:</span></span><br><span class="line">  <span class="attr">disable_on_mobile:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">position:</span> <span class="string">before_sidebar</span></span><br><span class="line">  <span class="attr">aplayer:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">options:</span></span><br><span class="line">      <span class="attr">audio:</span> []</span><br><span class="line">  <span class="attr">meting:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">options:</span></span><br><span class="line">      <span class="attr">id:</span> <span class="number">2265921590</span></span><br><span class="line">      <span class="attr">server:</span> <span class="string">netease</span></span><br><span class="line">      <span class="attr">type:</span> <span class="string">playlist</span></span><br><span class="line">      <span class="attr">auto:</span></span><br></pre></td></tr></table></figure>
 <hr />
 <h2 id="插入目录"><a class="markdownIt-Anchor" href="#插入目录"></a> 插入目录</h2>
-<p>在文章任意位置插入：</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- toc --&gt;</span><br></pre></td></tr></table></figure>
-<p>会自动根据文章标题层级生成目录。</p>
+<p>在 <code>_config.reimu.yml</code> 中 <code>toc: true</code> 已全局开启目录。单篇文章可通过 front-matter 覆盖：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">toc:</span> <span class="literal">false</span>  <span class="comment"># 关闭这篇文章的目录</span></span><br></pre></td></tr></table></figure>
 <hr />
 <h2 id="代码块"><a class="markdownIt-Anchor" href="#代码块"></a> 代码块</h2>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">```python</span></span><br><span class="line"><span class="code">print(&quot;hello&quot;)</span></span><br><span class="line"><span class="code">```</span></span><br></pre></td></tr></table></figure>
-<p><code>_config.kira.yml</code> 中 <code>copyableCodeblock: true</code> 已开启，鼠标悬停代码块会显示复制按钮。</p>
+<p>代码块悬停显示复制按钮，默认展开。可在 <code>_config.reimu.yml</code> 中调整：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">code_block:</span></span><br><span class="line">  <span class="attr">expand:</span> <span class="literal">true</span>       <span class="comment"># true=全部展开, false=全部折叠, 数字=超过N行折叠</span></span><br><span class="line"><span class="attr">clipboard:</span></span><br><span class="line">  <span class="attr">copyright:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span>     <span class="comment"># 复制时附加版权声明</span></span><br></pre></td></tr></table></figure>
 <hr />
 <h2 id="其他"><a class="markdownIt-Anchor" href="#其他"></a> 其他</h2>
 <ul>
-<li><strong>字数统计 &amp; 阅读时间</strong>：自动显示在文章 meta 栏</li>
-<li><strong>代码高亮</strong>：基于 highlight.js，自动识别语言</li>
-<li><strong>响应式</strong>：文章页面自适应手机 / 平板 / 桌面</li>
+<li><strong>字数统计 &amp; 阅读时间</strong>：自动显示在文章 meta 栏（<code>footer.count: true</code>）</li>
+<li><strong>代码高亮</strong>：基于 highlight.js</li>
+<li><strong>数学公式</strong>：支持 KaTeX / MathJax（<code>math.enable: true</code>）</li>
+<li><strong>Mermaid 图表</strong>：支持（<code>mermaid.enable: true</code>）</li>
+<li><strong>响应式</strong>：自适应手机 / 平板 / 桌面，支持暗色模式</li>
+<li><strong>Pace 进度条</strong>：页面加载进度条（<code>pace.enable: true</code>）</li>
 </ul>
 
     </div>
@@ -381,10 +426,10 @@
       </div>
       <div>
         <span class="icon-brush"></span>
-        499
+        718
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        00:03
+        00:04
       </div>
       <div>
         <span class="icon-eye"></span>
@@ -406,7 +451,7 @@
   <div class="sidebar-wrap">
         <div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
 <div class="sidebar-toc-wrapper toc-div-class" >
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E5%B1%9E%E6%80%A7front-matter"><span class="toc-number">1.</span> <span class="toc-text"> 文章属性（front-matter）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87"><span class="toc-number">2.</span> <span class="toc-text"> 插入图片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E9%93%BE%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text"> 插入链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E8%A7%86%E9%A2%91"><span class="toc-number">4.</span> <span class="toc-text"> 插入视频</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#b%E7%AB%99%E8%A7%86%E9%A2%91"><span class="toc-number">4.1.</span> <span class="toc-text"> B站视频</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#codepen"><span class="toc-number">4.2.</span> <span class="toc-text"> Codepen</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90aplayer"><span class="toc-number">5.</span> <span class="toc-text"> 插入音乐（APlayer）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E6%98%93%E4%BA%91%E7%AD%89%E5%B9%B3%E5%8F%B0"><span class="toc-number">5.1.</span> <span class="toc-text"> 网易云等平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%92%AD%E6%94%BE%E5%99%A8"><span class="toc-number">5.2.</span> <span class="toc-text"> 自定义播放器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E7%9B%AE%E5%BD%95"><span class="toc-number">6.</span> <span class="toc-text"> 插入目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-number">7.</span> <span class="toc-text"> 代码块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">8.</span> <span class="toc-text"> 其他</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E5%B1%9E%E6%80%A7front-matter"><span class="toc-number">1.</span> <span class="toc-text"> 文章属性（front-matter）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87"><span class="toc-number">2.</span> <span class="toc-text"> 插入图片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E9%93%BE%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text"> 插入链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#markdown-%E5%A2%9E%E5%BC%BA%E5%AE%B9%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text"> Markdown 增强容器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%A0%87%E7%AD%BE%E7%BB%84%E4%BB%B6"><span class="toc-number">5.</span> <span class="toc-text"> 插入标签组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E5%86%8C"><span class="toc-number">5.1.</span> <span class="toc-text"> 相册</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E6%A0%BC%E5%B8%83%E5%B1%80"><span class="toc-number">5.2.</span> <span class="toc-text"> 网格布局</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E7%AD%BE%E9%A1%B5"><span class="toc-number">5.3.</span> <span class="toc-text"> 标签页</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E7%A4%BA%E5%9D%97"><span class="toc-number">5.4.</span> <span class="toc-text"> 提示块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%98%E5%8F%A0%E5%9D%97"><span class="toc-number">5.5.</span> <span class="toc-text"> 折叠块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5%E5%8D%A1%E7%89%87"><span class="toc-number">5.6.</span> <span class="toc-text"> 链接卡片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E7%AD%BE%E8%BD%AE%E7%9B%98"><span class="toc-number">5.7.</span> <span class="toc-text"> 标签轮盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%83%AD%E5%BA%A6%E5%9B%BE"><span class="toc-number">5.8.</span> <span class="toc-text"> 热度图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E9%9F%B3%E4%B9%90aplayer-meting"><span class="toc-number">6.</span> <span class="toc-text"> 插入音乐（APlayer + Meting）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E7%9B%AE%E5%BD%95"><span class="toc-number">7.</span> <span class="toc-text"> 插入目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-number">8.</span> <span class="toc-text"> 代码块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">9.</span> <span class="toc-text"> 其他</span></a></li></ol>
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
@@ -541,9 +586,9 @@
           url: "https://nexlvi.github.io/2026/05/20/hello-world/",
           excerpt: "",
           description: "",
-          stripContent: " 文章属性（front-matter） 文章顶部的 --- 块里可以写这些：    属性 说明 示例     title 文章标题 title: 我的第一篇文章   date 发布日期 date: 2026-05-20   cover 封面图（首页列表 + 文章页顶部都会显示） cover: /images/photo.jpg   tags 标签，显示在文章底部和侧边栏标签云 tags:\n  - 网络\n  - 安全   categories 分类 categories:\n  - CTF  ",
+          stripContent: " 文章属性（front-matter） 文章顶部的 --- 块里可以写这些：    属性 说明 示例     title 文章标题 title: 我的第一篇文章   date 发布日期 date: 2026-05-20   cover 封面图（优先级高于全局 banner） cover: /images/photo.jpg   banner 文章页顶部大图（覆盖全局 banner） banner: /images/banner.jpg   tags 标签 tags:\n  - Hexo\n  -",
           date: "Wed May 20 2026 00:00:00 GMT+0800",
-          updated: "Wed May 20 2026 00:22:35 GMT+0800",
+          updated: "Wed May 20 2026 01:42:49 GMT+0800",
           cover: "/images/photo.jpg",
         };
       </script>

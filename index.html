@@ -250,8 +250,8 @@
     <div class="post-info">
       <div class="post-meta">
         <span><span class="icon-calendar"></span>2026-05-20</span>
-        <span><span class="icon-pencil"></span>499 字</span>
-        <span><span class="icon-clock"></span>3 分钟</span>
+        <span><span class="icon-pencil"></span>718 字</span>
+        <span><span class="icon-clock"></span>4 分钟</span>
       </div>
       <h2 class="post-title">Hexo 博客写作指南</h2>
       <article class="post-article">
@@ -278,13 +278,18 @@ date: 2026-05-20
 
 
 cover
-封面图（首页列表 + 文章页顶部都会显示）
+封面图（优先级高于全局 banner）
 cover: /images/photo.jpg
 
 
+banner
+文章页顶部大图（覆盖全局 banner）
+banner: /images/banner.jpg
+
+
 tags
-标签，显示在文章底部和侧边栏标签云
-tags:\n  - 网络\n  - 安全
+标签
+tags:\n  - Hexo\n  - 教程
 
 
 categories
@@ -292,12 +297,7 @@ categories
 categories:\n  - CTF
 
 
-comments
-是否开启评论，默认开
-comments: false 关闭
-
-
-hide_cop
+comment
       </article>
     </div>
   </div>
@@ -322,10 +322,10 @@ hide_cop
       </div>
       <div>
         <span class="icon-brush"></span>
-        499
+        718
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        00:03
+        00:04
       </div>
       <div>
         <span class="icon-eye"></span>
