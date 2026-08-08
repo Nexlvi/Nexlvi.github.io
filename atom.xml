@@ -10,16 +10,16 @@
   <link href="https://nexlvi.github.io/atom.xml" rel="self"/>
   <rights>All rights reserved 2026, Nexlvi</rights>
   <title>Nexlvi's Blog</title>
-  <updated>2026-08-07T13:51:10.375Z</updated>
+  <updated>2026-08-08T04:48:59.775Z</updated>
   <entry>
     <author>
       <name>Nexlvi</name>
     </author>
     <category term="学习笔记" scheme="https://nexlvi.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <category term="IOT" scheme="https://nexlvi.github.io/tags/IOT/"/>
-    <id>https://nexlvi.github.io/2026/05/20/DIR-815%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</id>
-    <link href="https://nexlvi.github.io/2026/05/20/DIR-815%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"/>
-    <published>2026-05-20T11:29:06.000Z</published>
+    <id>https://nexlvi.github.io/2026/06/05/DIR-815%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</id>
+    <link href="https://nexlvi.github.io/2026/06/05/DIR-815%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/"/>
+    <published>2026-06-05T11:29:06.000Z</published>
     <summary>
       <![CDATA[<blockquote>
 <p>漏洞编号：CNVD-2013-11625<br />
@@ -27,7 +27,7 @@
 架构：MIPS32 Little]]>
     </summary>
     <title>DIR-815漏洞复现</title>
-    <updated>2026-08-07T13:51:10.375Z</updated>
+    <updated>2026-08-08T04:48:59.775Z</updated>
   </entry>
   <entry>
     <author>

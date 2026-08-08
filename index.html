@@ -219,7 +219,7 @@
     <div class="widget-wrap" data-aos="fade-up">
       <h3 class="widget-title">归档</h3>
       <div class="widget">
-        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">五月 2026</a></li></ul>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/06/">六月 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">五月 2026</a></li></ul>
       </div>
     </div>
   </div>
@@ -230,7 +230,7 @@
       <div class="widget">
         <ul>
             <li>
-              <a href="/2026/05/20/DIR-815%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" title="DIR-815漏洞复现">DIR-815漏洞复现</a>
+              <a href="/2026/06/05/DIR-815%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" title="DIR-815漏洞复现">DIR-815漏洞复现</a>
             </li>
             <li>
               <a href="/2026/05/20/hello-world/" title="Hexo 博客写作指南">Hexo 博客写作指南</a>
@@ -246,13 +246,13 @@
 
           <section id="main" aria-label="Main content">      <div class="post-wrapper">
   <div class="post-wrap left" data-aos="fade-up">
-      <a class="post-link" href="/2026/05/20/DIR-815%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" aria-label="DIR-815漏洞复现" title="DIR-815漏洞复现"></a>
+      <a class="post-link" href="/2026/06/05/DIR-815%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" aria-label="DIR-815漏洞复现" title="DIR-815漏洞复现"></a>
     <div class="post-cover left">
         <img data-src="/images/dir.jpg" data-sizes="auto" alt="DIR-815漏洞复现" class="lazyload">
     </div>
     <div class="post-info">
       <div class="post-meta">
-        <span><span class="icon-calendar"></span>2026-05-20</span>
+        <span><span class="icon-calendar"></span>2026-06-05</span>
         <span><span class="icon-pencil"></span>2.6k 字</span>
         <span><span class="icon-clock"></span>12 分钟</span>
       </div>
@@ -262,12 +262,11 @@
 漏洞编号：CNVD-2013-11625
 目标固件：DIR815A1_FW103b01.bin（D-Link DIR-815 Rev.A 1.03b01）
 架构：MIPS32 Little Endian
-复现方式：QEMU user-mode 本地仿真，无需真实路由器
 
  第一步：解包固件，找到文件系统
  0. 你需要提前装好的工具
 笔者这里使用的是arch linux，下载可根据自身系统调整
-12345# Arch Linuxsudo pacman -S qemu-user qemu-user-static binwalk gdb python python-pip# Python 库pi
+12345# Arch Linuxsudo pacman -S qemu-user qemu-user-static binwalk gdb python python-pip# Python 库pip install pwntools keystone-engin
       </article>
     </div>
   </div>
